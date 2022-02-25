@@ -47,6 +47,13 @@ trait PlayerWatcher
         $this->waitAndReRun($player);
     }
 
+    public function listCurrent(): string
+    {
+        $player = $this->getPlayingTrackOrDie();
+
+        return $player->getItem()->getComment();
+    }
+
     protected function waitAndReRun(PlayerInterface $currentPlaying): void
     {
         $progress = $currentPlaying->getProgress();

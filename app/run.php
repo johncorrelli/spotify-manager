@@ -46,6 +46,10 @@ if (!isset($argv[1])) {
 if (isset($argv[1])) {
     $command = $argv[1];
 
+    if ($command === 'current-status') {
+        echo $spotify->listCurrent();
+    }
+
     if ($command === 'block-song') {
         $spotify->blockSong($skippables);
     }
