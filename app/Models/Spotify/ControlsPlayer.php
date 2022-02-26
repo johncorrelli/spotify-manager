@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Spotify;
 
 use App\Exceptions\Spotify\NotPlayingException;
@@ -32,7 +34,7 @@ trait ControlsPlayer
             throw new NotPlayingException('Player is not playing.');
         }
 
-        if ($currentlyPlaying->getType() !== Player::TRACK) {
+        if (Player::TRACK !== $currentlyPlaying->getType()) {
             throw new NotPlayingTrackException('Spotify is not playing a Track');
         }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Spotify\Responses;
 
 use App\Exceptions\Spotify\SpotifyException;
@@ -66,7 +68,7 @@ class Player implements PlayerInterface
         $item = $response->item ?? null;
         $type = $item->type ?? null;
 
-        if ($type === 'track') {
+        if ('track' === $type) {
             return self::fromTrackResponse($response);
         }
 
@@ -79,7 +81,7 @@ class Player implements PlayerInterface
         $item = $response->item ?? null;
 
         if (!$item) {
-            throw new SpotifyException("Spotify response does not contain an item");
+            throw new SpotifyException('Spotify response does not contain an item');
         }
 
         $album = new Album($item->album->id, $item->album->name);
@@ -91,7 +93,7 @@ class Player implements PlayerInterface
         $track = new Track($item->id, $item->name, $album, $artists);
         $track->setDuration($item->duration_ms);
 
-        $player = new Player($type, $track);
+        $player = new self($type, $track);
         $player->setIsPlaying($response->is_playing);
         $player->setProgress($response->progress_ms);
 

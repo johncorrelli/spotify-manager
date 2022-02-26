@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Commands;
 
 use App\Exceptions\Spotify\NotPlayingException;
@@ -18,7 +20,7 @@ class Manage
         $this->spotify = $spotify;
     }
 
-    public function manage()
+    public function manage(): void
     {
         $restartCopy = 'Restart script when Spotify is playing a track.';
 
@@ -34,7 +36,7 @@ class Manage
         }
     }
 
-    protected function manageCurrentTrack(PlayerInterface $player)
+    protected function manageCurrentTrack(PlayerInterface $player): void
     {
         $track = $player->getItem();
 
@@ -43,7 +45,7 @@ class Manage
         }
 
         $this->writeToCli('');
-        $this->writeToCli('Now playing: ' . $track->getComment());
+        $this->writeToCli('Now playing: '.$track->getComment());
 
         $msRemaining = $this->spotify->remainingMicroseconds($player);
 
@@ -51,6 +53,7 @@ class Manage
 
         if (null === $input) {
             $this->handleNoInput();
+
             return;
         }
 
@@ -68,7 +71,7 @@ class Manage
 
         if (
             !is_numeric($input)
-            || $input > count($commands)
+            || $input > \count($commands)
             || $input < 0
         ) {
             $this->writeToCli('Invalid input received.');
@@ -78,7 +81,7 @@ class Manage
         }
 
         // @todo handle this better
-        if ($commands[$input] !== 'nextTrack') {
+        if ('nextTrack' !== $commands[$input]) {
             $this->spotify->{$commands[$input]}($this->spotify->getSkippables());
         }
 
@@ -95,7 +98,7 @@ class Manage
             'blockSong',
             'blockArtist',
             'blockAlbum',
-            'nextTrack'
+            'nextTrack',
         ];
     }
 
@@ -108,7 +111,7 @@ class Manage
             $this->writeToCli("    {$input} - to {$command}");
         }
 
-        $input = shell_exec("read -t $timeout -p \"What would you like to do?\n\"; echo \$REPLY");
+        $input = shell_exec("read -t {$timeout} -p \"What would you like to do?\n\"; echo \$REPLY");
 
         $trimmedInput = trim($input ?? '');
 
@@ -119,7 +122,7 @@ class Manage
         return (int) $trimmedInput;
     }
 
-    private function writeToCli(string $text, bool $withLineBreak = true)
+    private function writeToCli(string $text, bool $withLineBreak = true): void
     {
         echo $text;
 

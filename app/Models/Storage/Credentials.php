@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Storage;
 
 use App\Exceptions\CredentialException;
@@ -8,10 +10,6 @@ class Credentials extends AccessesDisk
 {
     /**
      * Returns the value for a specified credential.
-     *
-     * @param string $credentialKey
-     *
-     * @return null|string
      */
     public function get(string $credentialKey): ?string
     {
@@ -39,9 +37,6 @@ class Credentials extends AccessesDisk
 
     /**
      * Saves a new credential.
-     *
-     * @param string $key
-     * @param string $value
      */
     public function set(string $key, string $value): void
     {
@@ -55,7 +50,7 @@ class Credentials extends AccessesDisk
     protected function confirmOrGet(): void
     {
         foreach ($this->contents as $credential => $value) {
-            if ($value !== '') {
+            if ('' !== $value) {
                 continue;
             }
 
@@ -63,7 +58,7 @@ class Credentials extends AccessesDisk
             $this->contents->{$credential} = readline();
             $this->save();
 
-            if ($this->contents->{$credential} === '') {
+            if ('' === $this->contents->{$credential}) {
                 throw new CredentialException($credential);
             }
         }

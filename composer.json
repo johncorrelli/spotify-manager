@@ -14,8 +14,8 @@
     },
     "scripts": {
         "phan": "phan --allow-polyfill-parser",
-        "standards": "php-cs-fixer fix app --dry-run --show-progress=none --verbose --diff",
-        "standards:fix": "php-cs-fixer fix app"
+        "standards": "php-cs-fixer fix --dry-run --show-progress=none --verbose --diff",
+        "standards:fix": "php-cs-fixer fix"
     },
     "require": {
         "php": "^8.1.0"

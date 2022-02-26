@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Spotify\Authorization;
 
 use App\Models\BaseApi;
@@ -7,7 +9,7 @@ use App\Models\BaseApi;
 class Api extends BaseApi
 {
     /**
-     * @param string $clientId your spotify app's client id
+     * @param string $clientId     your spotify app's client id
      * @param string $clientSecret your spotify app's client secret
      * @param ...$attrs
      */

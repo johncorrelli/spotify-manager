@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Spotify\Authorization;
 
 class Authorization
@@ -26,8 +28,6 @@ class Authorization
      * Generates an authorization token for the current user.
      * If the user has never initialized Spotify, it will first
      * take them through the authorization flow.
-     *
-     * @return string
      */
     public function generateAuthToken(): string
     {
@@ -40,8 +40,6 @@ class Authorization
 
     /**
      * Returns the current access token.
-     *
-     * @return null|string
      */
     public function getAccessToken(): ?string
     {
@@ -50,8 +48,6 @@ class Authorization
 
     /**
      * Returns the refresh token, used to generate a new access token.
-     *
-     * @return null|string
      */
     public function getRefreshToken(): ?string
     {
@@ -63,8 +59,6 @@ class Authorization
      * Will generate and access and refresh token for the current user.
      * They will be asked to paste a `code` into the terminal, which we will then
      * use to generate their access and refresh tokens.
-     *
-     * @return string
      */
     public function initializeAuthorization(): string
     {
@@ -90,10 +84,6 @@ class Authorization
     /**
      * After a user enters the `code`, we will send that off to Spotify to hydrate
      * the access and refresh token. Access tokens last for 1 hour. Refresh tokens are forever.
-     *
-     * @param string $authorizationCode
-     *
-     * @return string
      */
     protected function getAccessTokenFromAuthorizationCode(string $authorizationCode): string
     {
@@ -118,10 +108,6 @@ class Authorization
 
     /**
      * Generates a new access token based off of the user's refresh token.
-     *
-     * @param string $refreshToken
-     *
-     * @return string
      */
     protected function refreshAccessToken(string $refreshToken): string
     {
@@ -142,8 +128,6 @@ class Authorization
 
     /**
      * Sets the new access token.
-     *
-     * @param string $accessToken
      */
     protected function setAccessToken(string $accessToken): void
     {
@@ -152,8 +136,6 @@ class Authorization
 
     /**
      * Sets the refresh token.
-     *
-     * @param string $refreshToken
      */
     protected function setRefreshToken(string $refreshToken): void
     {

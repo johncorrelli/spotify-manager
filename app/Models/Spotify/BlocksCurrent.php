@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Spotify;
 
 use App\Exceptions\Spotify\NotPlayingTrackException;
@@ -9,7 +11,7 @@ use App\Models\Spotify\Playable\Track;
 use App\Models\Storage\Skippables;
 
 /**
- * @method void nextTrack()
+ * @method void            nextTrack()
  * @method PlayerInterface getPlayingTrackOrDie()
  */
 trait BlocksCurrent

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Spotify;
 
 use App\Exceptions\Spotify\NotPlayingTrackException;
@@ -28,7 +30,7 @@ trait SkipsTracks
     protected function isSkippable(PlayableInterface $track): bool
     {
         if (!isset($this->skippables)) {
-            throw new SpotifyException("Skippables not set!");
+            throw new SpotifyException('Skippables not set!');
         }
         if (!($track instanceof Track)) {
             throw new NotPlayingTrackException();
@@ -39,8 +41,8 @@ trait SkipsTracks
         $skippableAlbumIds = array_column($itemsToSkip->albums, 'albumId');
         $skippableArtistIds = array_column($itemsToSkip->artists, 'artistId');
 
-        $shouldSkipSong = in_array($track->getId(), $skippableSongIds);
-        $shouldSkipAlbum = in_array($track->getAlbum()->getId(), $skippableAlbumIds);
+        $shouldSkipSong = \in_array($track->getId(), $skippableSongIds, true);
+        $shouldSkipAlbum = \in_array($track->getAlbum()->getId(), $skippableAlbumIds, true);
 
         $currentArtistIds = array_map(fn (Artist $artist) => $artist->getId(), $track->getArtists());
         $shouldSkipArtist = !empty(array_intersect($skippableArtistIds, $currentArtistIds));

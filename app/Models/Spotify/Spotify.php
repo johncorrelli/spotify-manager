@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Spotify;
 
 class Spotify
@@ -23,8 +25,6 @@ class Spotify
 
     /**
      * Returns the current user.
-     *
-     * @return object
      */
     protected function me(): object
     {

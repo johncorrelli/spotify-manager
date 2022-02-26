@@ -1,15 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 require __DIR__.'/../vendor/autoload.php';
 
 use App\Commands\Manage;
-use App\Models\Storage\Credentials;
 use App\Models\Spotify\Api;
 use App\Models\Spotify\Authorization\Api as AuthorizationApi;
-use App\Models\Spotify\Spotify;
 use App\Models\Spotify\Authorization\Authorization;
+use App\Models\Spotify\Spotify;
+use App\Models\Storage\Credentials;
 use App\Models\Storage\Skippables;
 
 // Setup initial authorization

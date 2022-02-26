@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Storage;
 
 class AccessesDisk
@@ -16,8 +18,6 @@ class AccessesDisk
 
     /**
      * Returns all saved contents.
-     *
-     * @return object
      */
     protected function getFileContents(): object
     {
@@ -35,7 +35,7 @@ class AccessesDisk
      */
     protected function save(): void
     {
-        $directory = dirname($this->filePath);
+        $directory = \dirname($this->filePath);
 
         if (!file_exists($directory)) {
             mkdir($directory, 0777, true);

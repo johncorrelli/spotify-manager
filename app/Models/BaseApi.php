@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Exceptions\HttpException;
@@ -33,27 +35,21 @@ class BaseApi
 
     /**
      * Depending on the $bodyFormat, format the request body accordingly.
-     *
-     * @param string $bodyFormat
-     * @param array $body
      */
     public function formatPostBody(string $bodyFormat, array $body = [])
     {
         $this->defaultHeaders[] = "Content-Type: {$bodyFormat}";
 
-        if ($bodyFormat === 'text/json') {
+        if ('text/json' === $bodyFormat) {
             return json_encode($body);
         }
-        if ($bodyFormat === 'application/x-www-form-urlencoded') {
+        if ('application/x-www-form-urlencoded' === $bodyFormat) {
             return http_build_query($body);
         }
 
         return $body;
     }
 
-    /**
-     * @return string
-     */
     public function getBaseUrl(): string
     {
         return $this->baseUrl;
@@ -61,11 +57,6 @@ class BaseApi
 
     /**
      * Trigger your API requests.
-     *
-     * @param string $method
-     * @param string $url
-     * @param array $body
-     * @param array $additionalHeaders
      */
     public function request(string $method, string $url, array $body = [], array $additionalHeaders = []): ?object
     {
@@ -75,12 +66,12 @@ class BaseApi
         curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($request, CURLOPT_ENCODING, 1);
 
-        if ($method === 'POST' || $method === 'PUT') {
+        if ('POST' === $method || 'PUT' === $method) {
             $postBody = $this->formatPostBody($this->postBodyFormat, $body);
             curl_setopt($request, CURLOPT_POST, 1);
             curl_setopt($request, CURLOPT_POSTFIELDS, $postBody);
 
-            if ($method === 'PUT') {
+            if ('PUT' === $method) {
                 curl_setopt($request, CURLOPT_CUSTOMREQUEST, 'PUT');
             }
         }
@@ -89,7 +80,7 @@ class BaseApi
 
         $responseBody = curl_exec($request);
 
-        if (is_array($request) && $request['http_code'] >= 400) {
+        if (\is_array($request) && $request['http_code'] >= 400) {
             throw new HttpException();
         }
 
@@ -98,8 +89,6 @@ class BaseApi
 
     /**
      * Sets the authorization for every API request.
-     *
-     * @param string $authHeader
      */
     public function setAuthorization(string $authHeader): void
     {
@@ -108,18 +97,14 @@ class BaseApi
 
     /**
      * Sets the $baseUrl for every API request.
-     *
-     * @param string $baseUrl
      */
-    public function setBaseUrl(string $baseUrl)
+    public function setBaseUrl(string $baseUrl): void
     {
         $this->baseUrl = $baseUrl;
     }
 
     /**
      * Set the format used to post requests.
-     *
-     * @param string $format
      */
     public function setPostBodyFormat(string $format): void
     {

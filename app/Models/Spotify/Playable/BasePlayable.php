@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Spotify\Playable;
 
 use App\Exceptions\Spotify\SpotifyException;
@@ -30,7 +32,7 @@ class BasePlayable implements PlayableInterface
 
     public function getDuration(): int
     {
-        throw new SpotifyException("Undefined function");
+        throw new SpotifyException('Undefined function');
     }
 
     public function getComment(): string
