@@ -26,6 +26,12 @@ trait ControlsPlayer
         $this->api->request('POST', 'me/player/next');
     }
 
+    public function setVolume(int $userVolume): void
+    {
+        $volume = min(100, max(0, $userVolume));
+        $this->api->request('PUT', "me/player/volume?volume_percent={$volume}");
+    }
+
     public function getPlayingTrackOrDie(): PlayerInterface
     {
         $currentlyPlaying = Player::fromResponse($this->api->request('GET', 'me/player') ?? (object) []);

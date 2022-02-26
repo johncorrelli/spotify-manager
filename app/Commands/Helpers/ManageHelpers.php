@@ -39,6 +39,10 @@ trait ManageHelpers
             ),
 
             new SpotifyCommand('Play Next Track', $this->spotify, fn () => $this->spotify->nextTrack()),
+
+            new SpotifyCommand('Set Volume for Meeting', $this->spotify, fn () => $this->spotify->setVolume(30)),
+
+            new SpotifyCommand('Set Full Volume', $this->spotify, fn () => $this->spotify->setVolume(100)),
         ];
     }
 }
