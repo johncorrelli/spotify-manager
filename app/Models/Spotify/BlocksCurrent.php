@@ -16,7 +16,7 @@ use App\Models\Storage\Skippables;
  */
 trait BlocksCurrent
 {
-    public function blockSong(Skippables $skippablesDb): void
+    public function blockTrack(Skippables $skippablesDb): void
     {
         $db = $this->getDb($skippablesDb);
         $db->songs[] = $this->formatCurrentTrack();

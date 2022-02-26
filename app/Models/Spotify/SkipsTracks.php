@@ -27,7 +27,7 @@ trait SkipsTracks
         return $this->skippables;
     }
 
-    protected function isSkippable(PlayableInterface $track): bool
+    public function isSkippable(PlayableInterface $track): bool
     {
         if (!isset($this->skippables)) {
             throw new SpotifyException('Skippables not set!');

@@ -47,6 +47,12 @@ class Manage
             throw new NotPlayingTrackException();
         }
 
+        if ($this->spotify->isSkippable($track)) {
+            $this->skipCurrentTrack();
+
+            return;
+        }
+
         $this->writeToCli('');
         $this->writeToCli('Now playing: '.$track->getComment());
 
@@ -61,6 +67,15 @@ class Manage
         }
 
         $this->handleInput($input);
+    }
+
+    protected function skipCurrentTrack(): void
+    {
+        $this->spotify->nextTrack();
+
+        sleep(1);
+
+        $this->manage();
     }
 
     protected function handleNoInput(): void
