@@ -2,7 +2,7 @@
 
 namespace App\Models\Spotify\Playable;
 
-use App\Exceptions\SpotifyException;
+use App\Exceptions\Spotify\SpotifyException;
 use App\Interfaces\Spotify\PlayableInterface;
 
 class BasePlayable implements PlayableInterface

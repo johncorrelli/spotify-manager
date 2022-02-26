@@ -2,7 +2,7 @@
 
 namespace App\Models\Spotify\Responses;
 
-use App\Exceptions\SpotifyException;
+use App\Exceptions\Spotify\SpotifyException;
 use App\Interfaces\Spotify\PlayableInterface;
 use App\Interfaces\Spotify\PlayerInterface;
 use App\Models\Spotify\Playable\Album;

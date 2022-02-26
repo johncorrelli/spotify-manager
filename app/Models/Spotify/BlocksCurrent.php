@@ -2,7 +2,7 @@
 
 namespace App\Models\Spotify;
 
-use App\Exceptions\SpotifyException;
+use App\Exceptions\Spotify\NotPlayingTrackException;
 use App\Interfaces\Spotify\PlayerInterface;
 use App\Models\Spotify\Playable\Artist;
 use App\Models\Spotify\Playable\Track;
@@ -20,7 +20,6 @@ trait BlocksCurrent
         $db->songs[] = $this->formatCurrentTrack();
 
         $this->save($skippablesDb, $db);
-        $this->nextTrack();
     }
 
     public function blockArtist(Skippables $skippablesDb): void
@@ -29,7 +28,6 @@ trait BlocksCurrent
         $db->artists[] = $this->formatCurrentArtist();
 
         $this->save($skippablesDb, $db);
-        $this->nextTrack();
     }
 
     public function blockAlbum(Skippables $skippablesDb): void
@@ -38,7 +36,6 @@ trait BlocksCurrent
         $db->albums[] = $this->formatCurrentAlbum();
 
         $this->save($skippablesDb, $db);
-        $this->nextTrack();
     }
 
     protected function save(Skippables $db, object $contents): void
@@ -69,7 +66,7 @@ trait BlocksCurrent
         $item = $item->getItem();
 
         if (!($item instanceof Track)) {
-            throw new SpotifyException('A track is not playing!');
+            throw new NotPlayingTrackException('A track is not playing!');
         }
 
         return $item;

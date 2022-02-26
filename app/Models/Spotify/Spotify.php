@@ -5,7 +5,8 @@ namespace App\Models\Spotify;
 class Spotify
 {
     use BlocksCurrent;
-    use PlayerWatcher;
+    use ControlsPlayer;
+    use SkipsTracks;
 
     /**
      * @var string

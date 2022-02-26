@@ -4,6 +4,7 @@ namespace App;
 
 require __DIR__.'/../vendor/autoload.php';
 
+use App\Commands\Manage;
 use App\Models\Storage\Credentials;
 use App\Models\Spotify\Api;
 use App\Models\Spotify\Authorization\Api as AuthorizationApi;
@@ -39,26 +40,5 @@ $skippables = new Skippables(__DIR__.'/../storage/Skippables.json');
 $spotify = new Spotify($spotifyApi);
 $spotify->setSkippables($skippables);
 
-if (!isset($argv[1])) {
-    $spotify->watchPlayer();
-}
-
-if (isset($argv[1])) {
-    $command = $argv[1];
-
-    if ($command === 'current-status') {
-        echo $spotify->listCurrent();
-    }
-
-    if ($command === 'block-song') {
-        $spotify->blockSong($skippables);
-    }
-
-    if ($command === 'block-artist') {
-        $spotify->blockArtist($skippables);
-    }
-
-    if ($command === 'block-album') {
-        $spotify->blockAlbum($skippables);
-    }
-}
+$manage = new Manage($spotify);
+$manage->manage();
