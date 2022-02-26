@@ -101,8 +101,6 @@ class Manage
         $selectedCommand = $commands[$input];
         $selectedCommand->onExecute();
 
-        $this->spotify->nextTrack();
-
         sleep(1);
 
         $this->manage();

@@ -17,9 +17,27 @@ trait ManageHelpers
     protected function getCommands(): array
     {
         return [
-            new SpotifyCommand('Block Current Track', $this->spotify, fn () => $this->spotify->blockTrack($this->spotify->getSkippables())),
-            new SpotifyCommand('Block Current Album', $this->spotify, fn () => $this->spotify->blockAlbum($this->spotify->getSkippables())),
-            new SpotifyCommand('Block Current Artist', $this->spotify, fn () => $this->spotify->blockArtist($this->spotify->getSkippables())),
+            new SpotifyCommand(
+                'Block Current Track',
+                $this->spotify,
+                fn () => $this->spotify->blockTrack($this->spotify->getSkippables())
+                    && $this->spotify->nextTrack()
+            ),
+
+            new SpotifyCommand(
+                'Block Current Album',
+                $this->spotify,
+                fn () => $this->spotify->blockAlbum($this->spotify->getSkippables())
+                    && $this->spotify->nextTrack()
+            ),
+
+            new SpotifyCommand(
+                'Block Current Artist',
+                $this->spotify,
+                fn () => $this->spotify->blockArtist($this->spotify->getSkippables())
+                    && $this->spotify->nextTrack()
+            ),
+
             new SpotifyCommand('Play Next Track', $this->spotify, fn () => $this->spotify->nextTrack()),
         ];
     }
