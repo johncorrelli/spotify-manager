@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Commands;
 
+use App\Commands\Helpers\ManageHelpers;
 use App\Exceptions\Spotify\NotPlayingException;
 use App\Exceptions\Spotify\NotPlayingTrackException;
 use App\Exceptions\Spotify\SpotifyException;
@@ -13,6 +14,8 @@ use App\Models\Spotify\Spotify;
 
 class Manage
 {
+    use ManageHelpers;
+
     protected Spotify $spotify;
 
     public function __construct(Spotify $spotify)
@@ -80,10 +83,8 @@ class Manage
             return;
         }
 
-        // @todo handle this better
-        if ('nextTrack' !== $commands[$input]) {
-            $this->spotify->{$commands[$input]}($this->spotify->getSkippables());
-        }
+        $selectedCommand = $commands[$input];
+        $selectedCommand->onExecute();
 
         $this->spotify->nextTrack();
 
@@ -92,23 +93,13 @@ class Manage
         $this->manage();
     }
 
-    protected function getCommands(): array
-    {
-        return [
-            'blockSong',
-            'blockArtist',
-            'blockAlbum',
-            'nextTrack',
-        ];
-    }
-
     protected function ask(int $remainingMicroseconds): ?int
     {
         $timeout = ceil($remainingMicroseconds / 1000000);
 
         $this->writeToCli('Player controls:');
         foreach ($this->getCommands() as $input => $command) {
-            $this->writeToCli("    {$input} - to {$command}");
+            $this->writeToCli("    {$input} - {$command->getSignature()}");
         }
 
         $input = shell_exec("read -t {$timeout} -p \"What would you like to do?\n\"; echo \$REPLY");
