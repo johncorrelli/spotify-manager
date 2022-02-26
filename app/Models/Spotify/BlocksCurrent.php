@@ -18,7 +18,7 @@ trait BlocksCurrent
 {
     public function blockTrack(Skippables $skippablesDb): void
     {
-        $db = $this->getDb($skippablesDb);
+        $db = $skippablesDb->get();
         $db->songs[] = $this->formatCurrentTrack();
 
         $this->save($skippablesDb, $db);
@@ -26,7 +26,7 @@ trait BlocksCurrent
 
     public function blockArtist(Skippables $skippablesDb): void
     {
-        $db = $this->getDb($skippablesDb);
+        $db = $skippablesDb->get();
         $db->artists[] = $this->formatCurrentArtist();
 
         $this->save($skippablesDb, $db);
@@ -34,7 +34,7 @@ trait BlocksCurrent
 
     public function blockAlbum(Skippables $skippablesDb): void
     {
-        $db = $this->getDb($skippablesDb);
+        $db = $skippablesDb->get();
         $db->albums[] = $this->formatCurrentAlbum();
 
         $this->save($skippablesDb, $db);
@@ -43,23 +43,6 @@ trait BlocksCurrent
     protected function save(Skippables $db, object $contents): void
     {
         $db->write($contents);
-    }
-
-    protected function getDb(Skippables $skippablesDb): object
-    {
-        $db = $skippablesDb->get();
-
-        if (!property_exists($db, 'songs')) {
-            $db->songs = [];
-        }
-        if (!property_exists($db, 'albums')) {
-            $db->albums = [];
-        }
-        if (!property_exists($db, 'artists')) {
-            $db->artists = [];
-        }
-
-        return $db;
     }
 
     protected function getCurrentTrack(): Track

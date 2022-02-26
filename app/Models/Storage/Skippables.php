@@ -8,7 +8,19 @@ class Skippables extends AccessesDisk
 {
     public function get(): object
     {
-        return $this->getFileContents();
+        $db = $this->getFileContents();
+
+        if (!property_exists($db, 'songs')) {
+            $db->songs = [];
+        }
+        if (!property_exists($db, 'albums')) {
+            $db->albums = [];
+        }
+        if (!property_exists($db, 'artists')) {
+            $db->artists = [];
+        }
+
+        return $db;
     }
 
     public function write(object $contents): void
