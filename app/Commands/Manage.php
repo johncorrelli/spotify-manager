@@ -23,20 +23,22 @@ class Manage
         $this->spotify = $spotify;
     }
 
-    public function manage(): void
+    public function manage(): int
     {
-        $restartCopy = 'Restart script when Spotify is playing a track.';
-
         try {
             $player = $this->spotify->getPlayingTrackOrDie();
             $this->manageCurrentTrack($player);
         } catch (NotPlayingException $_) {
-            $this->writeToCli("Spotify is not playing. {$restartCopy}");
+            $this->writeToCli('Spotify is not playing. Waiting 5 minutes before trying again.');
+            $this->runAfterDelay(fn () => $this->manage(), 5 * 60);
         } catch (NotPlayingTrackException $_) {
-            $this->writeToCli("Only Tracks from Spotify are managed right now. {$restartCopy}");
+            $this->writeToCli('Only Tracks from Spotify are managed right now. Waiting 5 minutes before trying again.');
+            $this->runAfterDelay(fn () => $this->manage(), 5 * 60);
         } catch (SpotifyException $e) {
             $this->writeToCli($e->getMessage());
         }
+
+        return 0;
     }
 
     protected function manageCurrentTrack(PlayerInterface $player): void
@@ -72,10 +74,7 @@ class Manage
     protected function skipCurrentTrack(): void
     {
         $this->spotify->nextTrack();
-
-        sleep(1);
-
-        $this->manage();
+        $this->runAfterDelay(fn () => $this->manage());
     }
 
     protected function handleNoInput(): void
@@ -100,10 +99,7 @@ class Manage
 
         $selectedCommand = $commands[$input];
         $selectedCommand->onExecute();
-
-        sleep(1);
-
-        $this->manage();
+        $this->runAfterDelay(fn () => $this->manage());
     }
 
     protected function ask(int $remainingMicroseconds): ?int
@@ -124,6 +120,13 @@ class Manage
         }
 
         return (int) $trimmedInput;
+    }
+
+    private function runAfterDelay(callable $callback, int $delay = 1): void
+    {
+        sleep(abs($delay));
+
+        ($callback)();
     }
 
     private function writeToCli(string $text, bool $withLineBreak = true): void
