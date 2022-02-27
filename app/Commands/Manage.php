@@ -56,6 +56,7 @@ class Manage
         }
 
         $this->writeToCli('');
+        $this->writeToCli('');
         $this->writeToCli('Now playing: '.$track->getComment());
 
         $msRemaining = $this->spotify->remainingMicroseconds($player);
@@ -107,11 +108,21 @@ class Manage
         $timeout = ceil($remainingMicroseconds / 1000000);
 
         $this->writeToCli('Player controls:');
+        $this->writeToCli('    id : command');
+        $this->writeToCli('    -- : -------');
         foreach ($this->getCommands() as $input => $command) {
-            $this->writeToCli("    {$input} - {$command->getSignature()}");
+            $inputId = str_pad((string) $input, 2, ' ', STR_PAD_LEFT);
+            $this->writeToCli("    {$inputId} : {$command->getSignature()}");
         }
 
-        $input = shell_exec("read -t {$timeout} -p \"What would you like to do?\n\"; echo \$REPLY");
+        /**
+         * Use of `shell_exec` is to allow us to pass a timeout though the `-t` option that returns
+         * if the user has not supplied input. We're able to take the remaining seconds from the
+         * current track and pass that into the `read` command to allow user input during the duration
+         * of the current track. Once the track is complete (the timeout is reached) the user's response
+         * or lack of response is provided to the calling function.
+         */
+        $input = shell_exec("read -t {$timeout} -p \"Enter command number if you wish to take action: \"; echo \$REPLY");
 
         $trimmedInput = trim($input ?? '');
 
