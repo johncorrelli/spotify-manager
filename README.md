@@ -1,8 +1,8 @@
 # spotify-manager
 
-If you're like me, you can't stand that you can't thumbs down artists (or even songs) on Spotify Premium. Using this little tool, you can add a blacklist of artists and songs that the manager will skip when they are playing.
+If you're like me, you can't stand that you can't thumbs down artists (or even songs) on Spotify Premium. Using this little tool, you can add a blacklist of artists, albums, and songs that the manager will skip when they are playing.
 
-This is still a WIP/Proof of Concept. I have plans to rework a good bit of how the blacklist is generated and used.
+This is still a WIP/Proof of Concept.
 
 ## Step 1
 - Clone the repo to your local machine.
@@ -32,8 +32,8 @@ Once you've entered these values, they'll be stored in a git ignored file at `st
 ## Usage
 
 - `./run` to have `spotify-manager` watch your currently playing track and let you hear what you want to hear and skip what you don't!
-- `./run block-song` to never hear that song again
-- `./run block-artist` to never hear a song from that artist again
-  - in the case of songs with multiple artists, only the first artist is blocked.
-- `./run block-album` to never hear a song from that album again
-
+  - while `spotify-manager` is running, it will give you the options to block the current:
+    - song
+    - artist
+      - in the case of a song with multiple artists, at this time, only the first artist is blocked.
+    - album
